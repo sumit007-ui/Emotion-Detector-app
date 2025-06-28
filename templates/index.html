@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center min-vh-100">
+    <div class="col-lg-8 col-xl-6">
+        <div class="glass-card text-center p-5">
+            <div class="hero-content">
+                <i class="fas fa-heart fa-4x text-primary mb-4 pulse-animation" style="color: var(--primary-color) !important;"></i>
+                <h1 class="display-4 fw-bold mb-4 gradient-text">💕 JustFeeling</h1>
+                <p class="lead mb-4">
+                    Your AI-powered emotional companion. Share your feelings and receive personalized support and guidance.
+                </p>
+                
+                <div class="feature-grid mb-4">
+                    <div class="feature-item">
+                        <i class="fas fa-brain text-info"></i>
+                        <span>AI-Powered</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-shield-alt text-success"></i>
+                        <span>Secure & Private</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-comments text-warning"></i>
+                        <span>24/7 Support</span>
+                    </div>
+                </div>
+
+                {% if not session.user_id %}
+                    <div class="cta-buttons">
+                        <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg me-3">
+                            <i class="fas fa-user-plus me-2"></i>Get Started
+                        </a>
+                        <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="cta-buttons">
+                        <a href="{{ url_for('chat') }}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-comments me-2"></i>Start Chatting
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}Chat - Emotion Detection Chat{% endblock %}
+
+{% block extra_head %}
+<style>
+.chat-container {
+    height: calc(100vh - 120px);
+    max-height: 800px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center h-100">
+    <div class="col-lg-8 col-xl-6">
+        <div class="glass-card chat-container d-flex flex-column p-0">
+            <!-- Chat Header -->
+            <div class="chat-header p-3 border-bottom border-light border-opacity-25">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-1">
+                            <i class="fas fa-robot text-primary me-2"></i>JustFeeling AI
+                        </h5>
+                        <small class="text-muted">Your emotional wellness companion</small>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-light btn-sm dropdown-toggle" type="button" id="chatOptions" data-bs-toggle="dropdown">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#" id="clearHistory">
+                                <i class="fas fa-trash me-2"></i>Clear History
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ url_for('logout') }}">
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                            </a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Messages -->
+            <div class="chat-messages flex-grow-1 p-3" id="chatMessages">
+                {% if not messages %}
+                    <div class="welcome-message text-center py-5">
+                        <i class="fas fa-heart fa-3x text-primary mb-3 pulse-animation"></i>
+                        <h4>Welcome to EmotiChat!</h4>
+                        <p class="text-muted">Share your feelings and thoughts. I'm here to listen and help.</p>
+                        <div class="suggested-messages">
+                            <button class="btn btn-outline-primary btn-sm me-2 mb-2 suggested-msg" data-msg="I'm feeling overwhelmed today">💭 I'm feeling overwhelmed</button>
+                            <button class="btn btn-outline-primary btn-sm me-2 mb-2 suggested-msg" data-msg="I need some motivation">✨ I need motivation</button>
+                            <button class="btn btn-outline-primary btn-sm mb-2 suggested-msg" data-msg="I'm having trouble sleeping">🌙 Sleep troubles</button>
+                        </div>
+                    </div>
+                {% else %}
+                    {% for message in messages %}
+                        <div class="message user-message mb-3">
+                            <div class="message-content">
+                                <i class="fas fa-user message-icon"></i>
+                                <div class="message-text">{{ message.user_message }}</div>
+                                <small class="message-time">{{ message.timestamp.strftime('%H:%M') }}</small>
+                            </div>
+                        </div>
+                        {% if message.ai_response %}
+                            <div class="message ai-message mb-3">
+                                <div class="message-content">
+                                    <i class="fas fa-robot message-icon"></i>
+                                    <div class="message-text">{{ message.ai_response }}</div>
+                                    <small class="message-time">{{ message.timestamp.strftime('%H:%M') }}</small>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <!-- Typing Indicator -->
+            <div class="typing-indicator p-3" id="typingIndicator" style="display: none;">
+                <div class="message ai-message">
+                    <div class="message-content">
+                        <i class="fas fa-robot message-icon"></i>
+                        <div class="typing-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Input -->
+            <div class="chat-input p-3 border-top border-light border-opacity-25">
+                <form id="chatForm" class="d-flex">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="messageInput" placeholder="Share your thoughts and feelings..." maxlength="500" autocomplete="off">
+                        <button class="btn btn-primary" type="submit" id="sendButton">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </form>
+                <small class="text-muted mt-1 d-block">
+                    <i class="fas fa-shield-alt me-1"></i>Your conversations are private and secure
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+{% endblock %}
