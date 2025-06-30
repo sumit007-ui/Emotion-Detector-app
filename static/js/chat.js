@@ -285,3 +285,13 @@ document.addEventListener('visibilitychange', () => {
         document.getElementById('messageInput').focus();
     }
 });
+
+// Example session ID (can store in localStorage)
+let sessionId = localStorage.getItem("sessionId");
+if (!sessionId) {
+  sessionId = crypto.randomUUID(); // or any random string
+  localStorage.setItem("sessionId", sessionId);
+}
+
+
+
